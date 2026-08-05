@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bathroom Collection — Product Detail</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFFFFF;
+    --panel:#F4F4F4;
+    --ink:#111111;
+    --grey-600:#5A5A5A;
+    --grey-400:#8C8C8C;
+    --line:#E1E1E1;
+    --radius-lg:20px;
+    --radius-md:12px;
+    --radius-sm:8px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:48px 24px;
+  }
+  .wrap{
+    max-width:1040px;
+    width:100%;
+    display:grid;
+    grid-template-columns:1.05fr 1fr;
+    gap:72px;
+    align-items:start;
+  }
+
+  /* ---- PRODUCT IMAGE STAGE ---- */
+  .stage{
+    position:relative;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius-lg);
+    aspect-ratio:1/1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+  .stage img{
+    width:78%;
+    height:78%;
+    object-fit:contain;
+    transition:opacity .2s ease;
+    border-radius:var(--radius-sm);
+  }
+  .stage img.swap{ opacity:0; }
+  .stage-meta{
+    position:absolute;
+    top:0; left:0; right:0;
+    display:flex;
+    justify-content:space-between;
+    padding:18px 20px;
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--grey-600);
+  }
+  .stage-index{
+    position:absolute;
+    bottom:0; left:0; right:0;
+    display:flex;
+    justify-content:space-between;
+    padding:16px 20px;
+    font-size:11px;
+    letter-spacing:.08em;
+    color:var(--grey-600);
+    border-top:1px solid var(--line);
+    background:rgba(255,255,255,.6);
+    backdrop-filter:blur(2px);
+  }
+  .stage-index span:last-child{color:var(--ink); font-weight:500;}
+
+  /* ---- PRODUCT SWITCHER ---- */
+  .product-switcher{
+    position:relative;
+    margin-bottom:24px;
+  }
+  .switcher-trigger{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius-md);
+    padding:14px 16px;
+    cursor:pointer;
+    font-family:'Inter', sans-serif;
+  }
+  .switcher-trigger-left{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .switcher-trigger-left img{
+    width:32px;
+    height:32px;
+    object-fit:contain;
+    border-radius:var(--radius-sm);
+    background:#fff;
+    border:1px solid var(--line);
+  }
+  .switcher-label-group span{
+    display:block;
+  }
+  .switcher-eyebrow{
+    font-size:10px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--grey-400);
+  }
+  .switcher-name{
+    font-size:14px;
+    font-weight:500;
+    color:var(--ink);
+  }
+  .chevron{
+    width:18px;
+    height:18px;
+    flex-shrink:0;
+    transition:transform .2s ease;
+    color:var(--grey-600);
+  }
+  .product-switcher.open .chevron{ transform:rotate(180deg); }
+
+  .switcher-panel{
+    position:absolute;
+    top:calc(100% + 8px);
+    left:0;
+    right:0;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:var(--radius-md);
+    padding:8px;
+    box-shadow:0 12px 32px rgba(0,0,0,.08);
+    z-index:20;
+    display:none;
+    max-height:320px;
+    overflow-y:auto;
+  }
+  .product-switcher.open .switcher-panel{ display:block; }
+
+  .switcher-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:10px;
+    border-radius:var(--radius-sm);
+    cursor:pointer;
+    transition:background .15s ease;
+  }
+  .switcher-item:hover{ background:var(--panel); }
+  .switcher-item.active{ background:var(--panel); }
+  .switcher-item img{
+    width:40px;
+    height:40px;
+    object-fit:contain;
+    border-radius:var(--radius-sm);
+    background:var(--panel);
+    border:1px solid var(--line);
+  }
+  .switcher-item-name{ font-size:13.5px; font-weight:500; }
+  .switcher-item-count{ font-size:11px; color:var(--grey-400); margin-top:2px; }
+
+  /* ---- INFO ---- */
+  .breadcrumb{
+    font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--grey-400);
+    margin-bottom:16px;
+  }
+  .breadcrumb b{color:var(--ink); font-weight:500;}
+  h1{
+    font-weight:600;
+    font-size:32px;
+    line-height:1.2;
+    letter-spacing:-.01em;
+    margin-bottom:14px;
+  }
+  .sku{
+    font-size:12px;
+    color:var(--grey-400);
+    margin-bottom:24px;
+    letter-spacing:.02em;
+  }
+  .desc{
+    font-size:14.5px;
+    font-weight:300;
+    line-height:1.75;
+    color:var(--grey-600);
+    margin-bottom:36px;
+    max-width:40ch;
+    padding-bottom:32px;
+    border-bottom:1px solid var(--line);
+  }
+
+  .option-label{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--grey-600);
+    margin-bottom:14px;
+  }
+  .option-label b{
+    color:var(--ink);
+    font-weight:500;
+    text-transform:none;
+    letter-spacing:0;
+    font-size:13px;
+  }
+
+  .swatches{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:36px;
+  }
+  .swatch{
+    width:52px;
+    height:52px;
+    border:1px solid var(--line);
+    border-radius:var(--radius-sm);
+    cursor:pointer;
+    position:relative;
+    overflow:hidden;
+    background-size:cover;
+    background-position:center;
+    transition:border-color .15s ease, transform .15s ease;
+  }
+  .swatch:hover{ border-color:var(--grey-400); transform:translateY(-1px); }
+  .swatch.active{
+    border:1.5px solid var(--ink);
+    outline:2px solid #fff;
+    outline-offset:-4px;
+  }
+
+  .cta{
+    width:100%;
+    background:var(--ink);
+    color:#fff;
+    border:1px solid var(--ink);
+    border-radius:var(--radius-md);
+    padding:16px 34px;
+    font-family:'Inter', sans-serif;
+    font-size:12.5px;
+    font-weight:500;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    cursor:pointer;
+    transition:background .2s ease, color .2s ease;
+  }
+  .cta:hover{ background:#fff; color:var(--ink); }
+
+  .specs{
+    display:flex;
+    gap:32px;
+    margin-top:28px;
+  }
+  .specs div{
+    font-size:11px;
+    color:var(--grey-400);
+    letter-spacing:.05em;
+    text-transform:uppercase;
+  }
+  .specs div b{
+    display:block;
+    color:var(--ink);
+    font-size:13px;
+    font-weight:500;
+    text-transform:none;
+    letter-spacing:0;
+    margin-top:4px;
+  }
+
+  @media (max-width:760px){
+    .wrap{grid-template-columns:1fr; gap:36px;}
+    h1{font-size:26px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="stage">
+    <div class="stage-meta">
+      <span>Bathroom Collection</span>
+      <span id="stageCode">01 / 05</span>
+    </div>
+    <img id="productImage" src="" alt="Product">
+    <div class="stage-index">
+      <span>Selected color/motif</span>
+      <span id="stageLabel"></span>
+    </div>
+  </div>
+
+  <div class="info">
+
+    <div class="product-switcher" id="productSwitcher">
+      <div class="switcher-trigger" id="switcherTrigger">
+        <div class="switcher-trigger-left">
+          <img id="switcherThumb" src="" alt="">
+          <div class="switcher-label-group">
+            <span class="switcher-eyebrow">Viewing product</span>
+            <span class="switcher-name" id="switcherName"></span>
+          </div>
+        </div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </div>
+      <div class="switcher-panel" id="switcherPanel"></div>
+    </div>
+
+    <div class="breadcrumb">Bathroom Collection <b id="crumbName"></b></div>
+    <h1 id="productName"></h1>
+    <div class="sku" id="productSku"></div>
+    <p class="desc" id="productDesc"></p>
+
+    <div class="option-label">
+      Color/Motif <b id="currentColorName"></b>
+    </div>
+    <div class="swatches" id="swatchContainer"></div>
+
+    <button class="cta">Add to Cart</button>
+
+    <div class="specs">
+      <div>Material<b id="specMaterial"></b></div>
+      <div>Size<b id="specSize"></b></div>
+      <div>Color/Motif Options<b id="specCount"></b></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  /* ============================================================
+     PRODUCT DATA
+     ------------------------------------------------------------
+     Each product has its own name, sku, description, specs, and
+     its own list of color options.
+
+     - thumb: small image used in the product switcher list
+     - colorOptions[].swatch: small swatch image or hex color
+     - colorOptions[].img: full product photo shown in the big
+       stage box when that color is selected
+
+     To add a new product: copy one whole product block below and
+     edit the values. To add a color to a product: add one line
+     inside that product's colorOptions array.
+     ============================================================ */
+  const products = [
+    {
+      name: "Soap Dispenser Set",
+      sku: "SDS-2024",
+      desc: "Textured resin soap dispenser and cup set with matching tray, finished in a natural wood-grain pattern.",
+      material: "Polyresin",
+      size: "18 x 10 cm",
+      thumb: "https://placehold.co/100x100/F4F4F4/111111?text=Soap",
+      colorOptions: [
+        { name: "Natural Oak",  swatch: "#c9b48a", img: "https://placehold.co/600x600/c9b48a/111111?text=Natural+Oak" },
+        { name: "Charcoal",     swatch: "#2b2b2b", img: "https://placehold.co/600x600/2b2b2b/FFFFFF?text=Charcoal" },
+        { name: "Ivory Marble", swatch: "#e9e4d8", img: "https://placehold.co/600x600/e9e4d8/111111?text=Ivory+Marble" }
+      ]
+    },
+    {
+      name: "Toilet Brush Holder",
+      sku: "TBH-2024",
+      desc: "Marble-finish toilet brush holder built to match the full Bathroom Collection set. Solid base, brushed steel handle.",
+      material: "Polyresin",
+      size: "Ø10 x 26 cm",
+      thumb: "https://placehold.co/100x100/F4F4F4/111111?text=Brush",
+      colorOptions: [
+        { name: "Marble Black",      swatch: "#1c1a18", img: "https://placehold.co/600x600/1c1a18/FFFFFF?text=Black" },
+        { name: "Marble Cream",      swatch: "#e8ddc4", img: "https://placehold.co/600x600/e8ddc4/111111?text=Cream" },
+        { name: "Marble Grey",       swatch: "#8f8f8f", img: "https://placehold.co/600x600/8f8f8f/111111?text=Grey" },
+        { name: "Marble Green",      swatch: "#93a597", img: "https://placehold.co/600x600/93a597/111111?text=Green" },
+        { name: "Marble Gold Swirl", swatch: "#7a5a2e", img: "https://placehold.co/600x600/7a5a2e/FFFFFF?text=Gold+Swirl" }
+      ]
+    },
+    {
+      name: "Towel Tray",
+      sku: "TWT-2024",
+      desc: "Lacquered wood towel tray with a patterned border, sized for hand towels or amenity display.",
+      material: "Lacquered wood",
+      size: "30 x 16 x 4 cm",
+      thumb: "https://placehold.co/100x100/F4F4F4/111111?text=Tray",
+      colorOptions: [
+        { name: "Espresso",   swatch: "#3b332c", img: "https://placehold.co/600x600/3b332c/FFFFFF?text=Espresso" },
+        { name: "White Vine", swatch: "#efece4", img: "https://placehold.co/600x600/efece4/111111?text=White+Vine" }
+      ]
+    },
+    {
+      name: "Ceramic Bath Set",
+      sku: "CBS-2024",
+      desc: "Four-piece ceramic bath accessory set with an engraved pattern, sold as dispenser, cup, and soap dish.",
+      material: "Ceramic",
+      size: "Set of 4",
+      thumb: "https://placehold.co/100x100/F4F4F4/111111?text=Ceramic",
+      colorOptions: [
+        { name: "Slate Blue", swatch: "#5c7686", img: "https://placehold.co/600x600/5c7686/FFFFFF?text=Slate+Blue" },
+        { name: "Teal",       swatch: "#4a7a76", img: "https://placehold.co/600x600/4a7a76/FFFFFF?text=Teal" }
+      ]
+    },
+    {
+      name: "Marble Bath Set",
+      sku: "MBS-2024",
+      desc: "Five-piece marble-effect bath set including dispenser, tumbler, tray, and soap dish, in a deep tonal finish.",
+      material: "Polyresin",
+      size: "Set of 5",
+      thumb: "https://placehold.co/100x100/F4F4F4/111111?text=Marble+Set",
+      colorOptions: [
+        { name: "Onyx Black",  swatch: "#151515", img: "https://placehold.co/600x600/151515/FFFFFF?text=Onyx+Black" },
+        { name: "Bronze Vein", swatch: "#6b4a2e", img: "https://placehold.co/600x600/6b4a2e/FFFFFF?text=Bronze+Vein" }
+      ]
+    }
+  ];
+
+  let currentProductIndex = 0;
+  let currentColorIndex = 0;
+
+  const productSwitcher   = document.getElementById('productSwitcher');
+  const switcherTrigger   = document.getElementById('switcherTrigger');
+  const switcherPanel     = document.getElementById('switcherPanel');
+  const switcherThumb     = document.getElementById('switcherThumb');
+  const switcherName      = document.getElementById('switcherName');
+
+  const crumbName         = document.getElementById('crumbName');
+  const productName       = document.getElementById('productName');
+  const productSku        = document.getElementById('productSku');
+  const productDesc       = document.getElementById('productDesc');
+  const specMaterial      = document.getElementById('specMaterial');
+  const specSize          = document.getElementById('specSize');
+  const specCount         = document.getElementById('specCount');
+
+  const swatchContainer   = document.getElementById('swatchContainer');
+  const productImage      = document.getElementById('productImage');
+  const stageLabel        = document.getElementById('stageLabel');
+  const stageCode         = document.getElementById('stageCode');
+  const currentColorName  = document.getElementById('currentColorName');
+
+  function isUrl(str){
+    return /^(https?:)?\/\//.test(str) || str.startsWith('data:image');
+  }
+
+  function renderSwitcherPanel(){
+    switcherPanel.innerHTML = '';
+    products.forEach((p, i) => {
+      const item = document.createElement('div');
+      item.className = 'switcher-item' + (i === currentProductIndex ? ' active' : '');
+      item.innerHTML = `
+        <img src="${p.thumb}" alt="${p.name}">
+        <div>
+          <div class="switcher-item-name">${p.name}</div>
+          <div class="switcher-item-count">${p.colorOptions.length} color/motif options</div>
+        </div>
+      `;
+      item.addEventListener('click', () => {
+        loadProduct(i);
+        productSwitcher.classList.remove('open');
+      });
+      switcherPanel.appendChild(item);
+    });
+  }
+
+  function renderSwatches(){
+    const colorOptions = products[currentProductIndex].colorOptions;
+    swatchContainer.innerHTML = '';
+    colorOptions.forEach((opt, i) => {
+      const el = document.createElement('div');
+      el.className = 'swatch' + (i === currentColorIndex ? ' active' : '');
+      if(isUrl(opt.swatch)){
+        el.style.backgroundImage = `url(${opt.swatch})`;
+      } else {
+        el.style.background = opt.swatch;
+      }
+      el.title = opt.name;
+      el.addEventListener('click', () => selectColor(i));
+      swatchContainer.appendChild(el);
+    });
+  }
+
+  function selectColor(index){
+    currentColorIndex = index;
+    const opt = products[currentProductIndex].colorOptions[index];
+
+    document.querySelectorAll('.swatch').forEach((s, i) => s.classList.toggle('active', i === index));
+
+    productImage.classList.add('swap');
+    setTimeout(() => {
+      productImage.src = opt.img;
+      productImage.alt = opt.name;
+      productImage.classList.remove('swap');
+    }, 120);
+
+    stageLabel.textContent = opt.name;
+    currentColorName.textContent = opt.name;
+    stageCode.textContent = String(index + 1).padStart(2, '0') + " / " + String(products[currentProductIndex].colorOptions.length).padStart(2, '0');
+  }
+
+  function loadProduct(index){
+    currentProductIndex = index;
+    currentColorIndex = 0;
+    const p = products[index];
+
+    switcherThumb.src = p.thumb;
+    switcherThumb.alt = p.name;
+    switcherName.textContent = p.name;
+
+    crumbName.textContent = "/ " + p.name;
+    productName.textContent = p.name;
+    productSku.textContent = "SKU: " + p.sku;
+    productDesc.textContent = p.desc;
+    specMaterial.textContent = p.material;
+    specSize.textContent = p.size;
+    specCount.textContent = p.colorOptions.length;
+
+    renderSwitcherPanel();
+    renderSwatches();
+    selectColor(0);
+  }
+
+  switcherTrigger.addEventListener('click', () => {
+    productSwitcher.classList.toggle('open');
+  });
+  document.addEventListener('click', (e) => {
+    if(!productSwitcher.contains(e.target)){
+      productSwitcher.classList.remove('open');
+    }
+  });
+
+  loadProduct(0);
+</script>
+
+</body>
+</html>
