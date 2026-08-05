@@ -33,9 +33,23 @@
     width:100%;
     display:grid;
     grid-template-columns:1.05fr 1fr;
-    gap:72px;
+    grid-template-areas:
+      "stage switcher"
+      "stage header"
+      "stage desc"
+      "stage swatches"
+      "stage cta"
+      "stage specs";
+    column-gap:72px;
     align-items:start;
   }
+  .wrap > .stage{ grid-area:stage; }
+  .wrap > .product-switcher{ grid-area:switcher; }
+  .wrap > .header-block{ grid-area:header; }
+  .wrap > .desc-block{ grid-area:desc; }
+  .wrap > .swatches-block{ grid-area:swatches; }
+  .wrap > .cta{ grid-area:cta; }
+  .wrap > .specs{ grid-area:specs; }
 
   /* ---- PRODUCT IMAGE STAGE ---- */
   .stage{
@@ -290,8 +304,37 @@
   }
 
   @media (max-width:760px){
-    .wrap{grid-template-columns:1fr; gap:36px;}
-    h1{font-size:26px;}
+    .wrap{
+      grid-template-columns:3fr 2fr;
+      grid-template-areas:
+        "stage swatches"
+        "switcher switcher"
+        "header header"
+        "desc desc"
+        "cta cta"
+        "specs specs";
+      column-gap:16px;
+      row-gap:20px;
+    }
+    .stage{ aspect-ratio:1/1.05; }
+    .stage-meta, .stage-index{ padding:12px; font-size:9.5px; }
+    .swatches-block{ margin-bottom:0; }
+    .swatches{
+      flex-direction:row;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-bottom:0;
+      max-height:none;
+    }
+    .swatch{ width:34px; height:34px; border-radius:50%; }
+    .option-label{ margin-bottom:10px; }
+    h1{font-size:24px;}
+    .desc-block{ padding-bottom:24px; }
+  }
+
+  @media (max-width:420px){
+    body{ padding:28px 14px; }
+    .wrap{ column-gap:12px; }
   }
 </style>
 </head>
@@ -311,41 +354,43 @@
     </div>
   </div>
 
-  <div class="info">
-
-    <div class="product-switcher" id="productSwitcher">
-      <div class="switcher-trigger" id="switcherTrigger">
-        <div class="switcher-trigger-left">
-          <img id="switcherThumb" src="" alt="">
-          <div class="switcher-label-group">
-            <span class="switcher-eyebrow">Viewing product</span>
-            <span class="switcher-name" id="switcherName"></span>
-          </div>
+  <div class="product-switcher" id="productSwitcher">
+    <div class="switcher-trigger" id="switcherTrigger">
+      <div class="switcher-trigger-left">
+        <img id="switcherThumb" src="" alt="">
+        <div class="switcher-label-group">
+          <span class="switcher-eyebrow">Viewing product</span>
+          <span class="switcher-name" id="switcherName"></span>
         </div>
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
       </div>
-      <div class="switcher-panel" id="switcherPanel"></div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
     </div>
+    <div class="switcher-panel" id="switcherPanel"></div>
+  </div>
 
+  <div class="header-block">
     <div class="breadcrumb">Bathroom Collection <b id="crumbName"></b></div>
     <h1 id="productName"></h1>
     <div class="sku" id="productSku"></div>
-    <p class="desc" id="productDesc"></p>
+  </div>
 
+  <p class="desc desc-block" id="productDesc"></p>
+
+  <div class="swatches-block">
     <div class="option-label">
       Color/Motif <b id="currentColorName"></b>
     </div>
     <div class="swatches" id="swatchContainer"></div>
+  </div>
 
-    <button class="cta">Add to Cart</button>
+  <button class="cta">Save</button>
 
-    <div class="specs">
-      <div>Material<b id="specMaterial"></b></div>
-      <div>Size<b id="specSize"></b></div>
-      <div>Color/Motif Options<b id="specCount"></b></div>
-    </div>
+  <div class="specs">
+    <div>Material<b id="specMaterial"></b></div>
+    <div>Size<b id="specSize"></b></div>
+    <div>Color/Motif Options<b id="specCount"></b></div>
   </div>
 
 </div>
@@ -370,7 +415,7 @@
     {
       name: "Soap Dispenser Set",
       sku: "SDS-2024",
-      desc: "Textured resin soap dispenser and cup set with matching tray, finished in a natural wood-grain pattern.",
+      desc: "Description",
       material: "Polyresin",
       size: "18 x 10 cm",
       thumb: "https://placehold.co/100x100/F4F4F4/111111?text=Soap",
@@ -383,7 +428,7 @@
     {
       name: "Toilet Brush Holder",
       sku: "TBH-2024",
-      desc: "Marble-finish toilet brush holder built to match the full Bathroom Collection set. Solid base, brushed steel handle.",
+      desc: "Description",
       material: "Polyresin",
       size: "Ø10 x 26 cm",
       thumb: "https://placehold.co/100x100/F4F4F4/111111?text=Brush",
@@ -398,7 +443,7 @@
     {
       name: "Towel Tray",
       sku: "TWT-2024",
-      desc: "Lacquered wood towel tray with a patterned border, sized for hand towels or amenity display.",
+      desc: "Description",
       material: "Lacquered wood",
       size: "30 x 16 x 4 cm",
       thumb: "https://placehold.co/100x100/F4F4F4/111111?text=Tray",
@@ -410,7 +455,7 @@
     {
       name: "Ceramic Bath Set",
       sku: "CBS-2024",
-      desc: "Four-piece ceramic bath accessory set with an engraved pattern, sold as dispenser, cup, and soap dish.",
+      desc: "Description",
       material: "Ceramic",
       size: "Set of 4",
       thumb: "https://placehold.co/100x100/F4F4F4/111111?text=Ceramic",
@@ -422,7 +467,7 @@
     {
       name: "Marble Bath Set",
       sku: "MBS-2024",
-      desc: "Five-piece marble-effect bath set including dispenser, tumbler, tray, and soap dish, in a deep tonal finish.",
+      desc: "Description",
       material: "Polyresin",
       size: "Set of 5",
       thumb: "https://placehold.co/100x100/F4F4F4/111111?text=Marble+Set",
