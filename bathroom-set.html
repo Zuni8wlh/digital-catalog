@@ -24,13 +24,30 @@
     font-family:'Inter', sans-serif;
     min-height:100vh;
     display:flex;
+    flex-direction:column;
     align-items:center;
-    justify-content:center;
-    padding:48px 24px;
   }
+  .topbar{
+    width:100%;
+    border-bottom:1px solid var(--line);
+    padding:18px 24px;
+  }
+  .back-link{
+    font-family:'Inter', sans-serif;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.01em;
+    color:var(--ink);
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+  .back-link:hover{ color:var(--grey-600); }
   .wrap{
     max-width:1040px;
     width:100%;
+    padding:48px 24px;
     display:grid;
     grid-template-columns:1.05fr 1fr;
     column-gap:72px;
@@ -314,9 +331,9 @@
     }
     .stage-col > *, .info-col > *{ width:100%; }
     .stage{ order:1; width:100%; max-width:320px; margin:0 auto; aspect-ratio:1/1.05; }
-    .swatches-block{ order:2; margin-bottom:0; }
-    .specs{ order:3; margin-top:0; gap:16px; flex-wrap:wrap; }
-    .product-switcher{ order:4; }
+    .product-switcher{ order:2; }
+    .swatches-block{ order:3; margin-bottom:0; }
+    .specs{ order:4; margin-top:0; gap:16px; flex-wrap:wrap; }
     .header-block{ order:5; }
     .desc-block{ order:6; padding-bottom:0; margin-top:0; }
 
@@ -337,14 +354,16 @@
   }
 
   @media (max-width:420px){
-    body{ padding:28px 14px; }
-    .wrap{ column-gap:12px; }
+    .wrap{ padding:28px 14px; column-gap:12px; }
+    .topbar{ padding:14px; }
   }
 </style>
 </head>
 <body>
 
-<a href="index.html" style="position:fixed; top:20px; left:20px; z-index:50; font-family:'Inter',sans-serif; font-size:12px; letter-spacing:.05em; text-transform:uppercase; color:#5A5A5A; text-decoration:none; display:flex; align-items:center; gap:6px;">&larr; All Categories</a>
+<div class="topbar">
+  <a href="index.html" class="back-link">&larr; Back</a>
+</div>
 
 <div class="wrap">
 
@@ -469,6 +488,24 @@
         { name: "Black",      code: "13007", swatch: "images/azure-bath-collection/swatch/13007_black.png",      img: "images/azure-bath-collection/main/13007_black.png" },
         { name: "Natural",    code: "13008", swatch: "images/azure-bath-collection/swatch/13008_natural.png",    img: "images/azure-bath-collection/main/13008_natural.png" },
         { name: "Silver",     code: "13009", swatch: "images/azure-bath-collection/swatch/13009_silver.png",     img: "images/azure-bath-collection/main/13009_silver.png" }
+      ]
+    },
+    {
+      name: "Toilet Brush Holder Azure",
+      sku: "TBHA-2024",
+      desc: "Description",
+      material: "Polyresin",
+      size: "Ø10 x 26 cm",
+      thumb: "images/toilet-brush-holder-azure/main/13001_wood.png",
+      colorOptions: [
+        { name: "Wood",       code: "13001", swatch: "images/toilet-brush-holder-azure/swatch/13001_wood.png",       img: "images/toilet-brush-holder-azure/main/13001_wood.png" },
+        { name: "Grey Beige", code: "13003", swatch: "images/toilet-brush-holder-azure/swatch/13003_grey_beige.png", img: "images/toilet-brush-holder-azure/main/13003_grey_beige.png" },
+        { name: "Gold",       code: "13004", swatch: "images/toilet-brush-holder-azure/swatch/13004_gold.png",       img: "images/toilet-brush-holder-azure/main/13004_gold.png" },
+        { name: "Botochino",  code: "13005", swatch: "images/toilet-brush-holder-azure/swatch/13005_botochino.png",  img: "images/toilet-brush-holder-azure/main/13005_botochino.png" },
+        { name: "Multi",      code: "13006", swatch: "images/toilet-brush-holder-azure/swatch/13006_multi.png",      img: "images/toilet-brush-holder-azure/main/13006_multi.png" },
+        { name: "Black",      code: "13007", swatch: "images/toilet-brush-holder-azure/swatch/13007_black.png",      img: "images/toilet-brush-holder-azure/main/13007_black.png" },
+        { name: "Natural",    code: "13008", swatch: "images/toilet-brush-holder-azure/swatch/13008_natural.png",    img: "images/toilet-brush-holder-azure/main/13008_natural.png" },
+        { name: "Silver",     code: "13009", swatch: "images/toilet-brush-holder-azure/swatch/13009_silver.png",     img: "images/toilet-brush-holder-azure/main/13009_silver.png" }
       ]
     },
     {
