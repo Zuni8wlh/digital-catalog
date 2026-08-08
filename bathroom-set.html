@@ -24,13 +24,30 @@
     font-family:'Inter', sans-serif;
     min-height:100vh;
     display:flex;
+    flex-direction:column;
     align-items:center;
-    justify-content:center;
-    padding:48px 24px;
   }
+  .topbar{
+    width:100%;
+    border-bottom:1px solid var(--line);
+    padding:18px 24px;
+  }
+  .back-link{
+    font-family:'Inter', sans-serif;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.01em;
+    color:var(--ink);
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+  .back-link:hover{ color:var(--grey-600); }
   .wrap{
     max-width:1040px;
     width:100%;
+    padding:48px 24px;
     display:grid;
     grid-template-columns:1.05fr 1fr;
     column-gap:72px;
@@ -264,23 +281,25 @@
     outline-offset:-4px;
   }
 
-  .cta{
-    width:100%;
-    margin-top:28px;
-    background:var(--ink);
-    color:#fff;
-    border:1px solid var(--ink);
-    border-radius:var(--radius-md);
-    padding:16px 34px;
-    font-family:'Inter', sans-serif;
-    font-size:12.5px;
-    font-weight:500;
-    letter-spacing:.1em;
-    text-transform:uppercase;
+  .save-icon{
+    position:absolute;
+    top:16px;
+    right:16px;
+    z-index:3;
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:#fff;
+    border:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:center;
     cursor:pointer;
-    transition:background .2s ease, color .2s ease;
+    color:var(--ink);
+    transition:background .15s ease, transform .15s ease;
   }
-  .cta:hover{ background:#fff; color:var(--ink); }
+  .save-icon:hover{ background:var(--panel); transform:translateY(-1px); }
+  .save-icon svg{ width:17px; height:17px; }
 
   .specs{
     display:flex;
@@ -305,28 +324,21 @@
 
   @media (max-width:760px){
     .stage-col, .info-col{ display:contents; }
-    .stage{ grid-area:stage; }
-    .desc-block{ grid-area:desc; }
-    .product-switcher{ grid-area:switcher; }
-    .header-block{ grid-area:header; }
-    .swatches-block{ grid-area:swatches; }
-    .cta{ grid-area:cta; }
-    .specs{ grid-area:specs; }
     .wrap{
-      grid-template-columns:3fr 2fr;
-      grid-template-areas:
-        "stage swatches"
-        "stage cta"
-        "stage specs"
-        "switcher switcher"
-        "header header"
-        "desc desc";
-      column-gap:16px;
-      row-gap:14px;
+      display:flex;
+      flex-direction:column;
+      gap:20px;
     }
-    .stage{ aspect-ratio:1/1.05; }
-    .stage-meta, .stage-index{ padding:12px; font-size:9.5px; }
-    .swatches-block{ margin-bottom:0; }
+    .stage-col > *, .info-col > *{ width:100%; }
+    .stage{ order:1; width:100%; max-width:320px; margin:0 auto; aspect-ratio:1/1.05; }
+    .product-switcher{ order:2; }
+    .swatches-block{ order:3; margin-bottom:0; }
+    .specs{ order:4; margin-top:0; gap:16px; flex-wrap:wrap; }
+    .header-block{ order:5; }
+    .desc-block{ order:6; padding-bottom:0; margin-top:0; }
+
+    .stage-meta{ display:none; }
+    .stage-index{ padding:12px; font-size:9.5px; }
     .swatches{
       flex-direction:row;
       flex-wrap:wrap;
@@ -339,20 +351,19 @@
     .selected-color-name{ margin-top:10px; }
     h1{font-size:22px; margin-bottom:6px;}
     .breadcrumb{ margin-bottom:8px; }
-    .desc-block{ padding-bottom:24px; }
-    .cta{ padding:14px 20px; font-size:11.5px; margin-top:10px; }
-    .specs{ margin-top:0; gap:16px; flex-wrap:wrap; }
   }
 
   @media (max-width:420px){
-    body{ padding:28px 14px; }
-    .wrap{ column-gap:12px; }
+    .wrap{ padding:28px 14px; column-gap:12px; }
+    .topbar{ padding:14px; }
   }
 </style>
 </head>
 <body>
 
-<a href="index.html" style="position:fixed; top:20px; left:20px; z-index:50; font-family:'Inter',sans-serif; font-size:12px; letter-spacing:.05em; text-transform:uppercase; color:#5A5A5A; text-decoration:none; display:flex; align-items:center; gap:6px;">&larr; All Categories</a>
+<div class="topbar">
+  <a href="index.html" class="back-link">&larr; Back</a>
+</div>
 
 <div class="wrap">
 
@@ -362,6 +373,11 @@
         <span>Bathroom Collection</span>
         <span id="stageCode">01 / 05</span>
       </div>
+      <button class="save-icon" aria-label="Save" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+        </svg>
+      </button>
       <img id="productImage" src="" alt="Product">
       <div class="stage-index">
         <span>Selected color/motif</span>
@@ -403,8 +419,6 @@
       </div>
     </div>
 
-    <button class="cta">Save</button>
-
     <div class="specs">
       <div>Material<b id="specMaterial"></b></div>
       <div>Size<b id="specSize"></b></div>
@@ -428,7 +442,7 @@
      tightly-cropped swatch photos:
 
        images/
-         azure-bath-collection/
+         azure-soap-dispenser/
            main/     → full product photos (used by "img")
            swatch/   → close-up color/motif crops (used by "swatch")
          [next-collection-name]/
@@ -458,79 +472,168 @@
      ============================================================ */
   const products = [
     {
-      name: "Azure Bath Collection",
+      name: "Azure Soap Dispenser",
       sku: "ABC-2024",
       desc: "Description",
       material: "Polyresin",
       size: "18 x 10 cm",
-      thumb: "images/azure-bath-collection/main/13001_wood.png",
+      thumb: "images/azure-soap-dispenser/main/13001_wood.png",
       colorOptions: [
-        { name: "Wood",       code: "13001", swatch: "images/azure-bath-collection/swatch/13001_wood.png",       img: "images/azure-bath-collection/main/13001_wood.png" },
-        { name: "Chocolate",  code: "13002", swatch: "images/azure-bath-collection/swatch/13002_chocolate.png",  img: "images/azure-bath-collection/main/13002_chocolate.png" },
-        { name: "Grey Beige", code: "13003", swatch: "images/azure-bath-collection/swatch/13003_grey_beige.png", img: "images/azure-bath-collection/main/13003_grey_beige.png" },
-        { name: "Gold",       code: "13004", swatch: "images/azure-bath-collection/swatch/13004_gold.png",       img: "images/azure-bath-collection/main/13004_gold.png" },
-        { name: "Botochindo", code: "13005", swatch: "images/azure-bath-collection/swatch/13005_botochindo.png", img: "images/azure-bath-collection/main/13005_botochindo.png" },
-        { name: "Multi",      code: "13006", swatch: "images/azure-bath-collection/swatch/13006_multi.png",      img: "images/azure-bath-collection/main/13006_multi.png" },
-        { name: "Black",      code: "13007", swatch: "images/azure-bath-collection/swatch/13007_black.png",      img: "images/azure-bath-collection/main/13007_black.png" },
-        { name: "Natural",    code: "13008", swatch: "images/azure-bath-collection/swatch/13008_natural.png",    img: "images/azure-bath-collection/main/13008_natural.png" },
-        { name: "Silver",     code: "13009", swatch: "images/azure-bath-collection/swatch/13009_silver.png",     img: "images/azure-bath-collection/main/13009_silver.png" }
+        { name: "Wood",       code: "13001", swatch: "images/azure-soap-dispenser/swatch/13001_wood.png",       img: "images/azure-soap-dispenser/main/13001_wood.png" },
+        { name: "Chocolate",  code: "13002", swatch: "images/azure-soap-dispenser/swatch/13002_chocolate.png",  img: "images/azure-soap-dispenser/main/13002_chocolate.png" },
+        { name: "Grey Beige", code: "13003", swatch: "images/azure-soap-dispenser/swatch/13003_grey_beige.png", img: "images/azure-soap-dispenser/main/13003_grey_beige.png" },
+        { name: "Gold",       code: "13004", swatch: "images/azure-soap-dispenser/swatch/13004_gold.png",       img: "images/azure-soap-dispenser/main/13004_gold.png" },
+        { name: "Botochindo", code: "13005", swatch: "images/azure-soap-dispenser/swatch/13005_botochindo.png", img: "images/azure-soap-dispenser/main/13005_botochindo.png" },
+        { name: "Multi",      code: "13006", swatch: "images/azure-soap-dispenser/swatch/13006_multi.png",      img: "images/azure-soap-dispenser/main/13006_multi.png" },
+        { name: "Black",      code: "13007", swatch: "images/azure-soap-dispenser/swatch/13007_black.png",      img: "images/azure-soap-dispenser/main/13007_black.png" },
+        { name: "Natural",    code: "13008", swatch: "images/azure-soap-dispenser/swatch/13008_natural.png",    img: "images/azure-soap-dispenser/main/13008_natural.png" },
+        { name: "Silver",     code: "13009", swatch: "images/azure-soap-dispenser/swatch/13009_silver.png",     img: "images/azure-soap-dispenser/main/13009_silver.png" }
       ]
     },
     {
-      name: "Arsh Bath Collection",
+      name: "Toilet Brush Holder Azure",
+      sku: "TBHA-2024",
+      desc: "Description",
+      material: "Polyresin",
+      size: "Ø10 x 26 cm",
+      thumb: "images/toilet-brush-holder-azure/main/13001_wood.png",
+      colorOptions: [
+        { name: "Wood",       code: "13001", swatch: "images/toilet-brush-holder-azure/swatch/13001_wood.png",       img: "images/toilet-brush-holder-azure/main/13001_wood.png" },
+        { name: "Grey Beige", code: "13003", swatch: "images/toilet-brush-holder-azure/swatch/13003_grey_beige.png", img: "images/toilet-brush-holder-azure/main/13003_grey_beige.png" },
+        { name: "Gold",       code: "13004", swatch: "images/toilet-brush-holder-azure/swatch/13004_gold.png",       img: "images/toilet-brush-holder-azure/main/13004_gold.png" },
+        { name: "Botochino",  code: "13005", swatch: "images/toilet-brush-holder-azure/swatch/13005_botochino.png",  img: "images/toilet-brush-holder-azure/main/13005_botochino.png" },
+        { name: "Multi",      code: "13006", swatch: "images/toilet-brush-holder-azure/swatch/13006_multi.png",      img: "images/toilet-brush-holder-azure/main/13006_multi.png" },
+        { name: "Black",      code: "13007", swatch: "images/toilet-brush-holder-azure/swatch/13007_black.png",      img: "images/toilet-brush-holder-azure/main/13007_black.png" },
+        { name: "Natural",    code: "13008", swatch: "images/toilet-brush-holder-azure/swatch/13008_natural.png",    img: "images/toilet-brush-holder-azure/main/13008_natural.png" },
+        { name: "Silver",     code: "13009", swatch: "images/toilet-brush-holder-azure/swatch/13009_silver.png",     img: "images/toilet-brush-holder-azure/main/13009_silver.png" }
+      ]
+    },
+    {
+      name: "Arsh Soap Dispenser",
       sku: "ARSH-2024",
       desc: "Description",
       material: "Polyresin",
       size: "18 x 10 cm",
-      thumb: "images/arsh-bath-collection/main/12001_blue.png",
+      thumb: "images/arsh-soap-dispenser/main/12001_blue.png",
       colorOptions: [
-        { name: "Blue",     code: "12001", swatch: "images/arsh-bath-collection/swatch/12001_blue.png",     img: "images/arsh-bath-collection/main/12001_blue.png" },
-        { name: "Ivory",    code: "12002", swatch: "images/arsh-bath-collection/swatch/12002_ivory.png",    img: "images/arsh-bath-collection/main/12002_ivory.png" },
-        { name: "Shell",    code: "12003", swatch: "images/arsh-bath-collection/swatch/12003_shell.png",    img: "images/arsh-bath-collection/main/12003_shell.png" },
-        { name: "Black",    code: "12004", swatch: "images/arsh-bath-collection/swatch/12004_black.png",    img: "images/arsh-bath-collection/main/12004_black.png" },
-        { name: "Copper",   code: "12005", swatch: "images/arsh-bath-collection/swatch/12005_copper.png",   img: "images/arsh-bath-collection/main/12005_copper.png" },
-        { name: "Silver",   code: "12006", swatch: "images/arsh-bath-collection/swatch/12006_silver.png",   img: "images/arsh-bath-collection/main/12006_silver.png" },
-        { name: "Charcoal", code: "12007", swatch: "images/arsh-bath-collection/swatch/12007_charcoal.png", img: "images/arsh-bath-collection/main/12007_charcoal.png" }
+        { name: "Blue",     code: "12001", swatch: "images/arsh-soap-dispenser/swatch/12001_blue.png",     img: "images/arsh-soap-dispenser/main/12001_blue.png" },
+        { name: "Ivory",    code: "12002", swatch: "images/arsh-soap-dispenser/swatch/12002_ivory.png",    img: "images/arsh-soap-dispenser/main/12002_ivory.png" },
+        { name: "Shell",    code: "12003", swatch: "images/arsh-soap-dispenser/swatch/12003_shell.png",    img: "images/arsh-soap-dispenser/main/12003_shell.png" },
+        { name: "Black",    code: "12004", swatch: "images/arsh-soap-dispenser/swatch/12004_black.png",    img: "images/arsh-soap-dispenser/main/12004_black.png" },
+        { name: "Copper",   code: "12005", swatch: "images/arsh-soap-dispenser/swatch/12005_copper.png",   img: "images/arsh-soap-dispenser/main/12005_copper.png" },
+        { name: "Silver",   code: "12006", swatch: "images/arsh-soap-dispenser/swatch/12006_silver.png",   img: "images/arsh-soap-dispenser/main/12006_silver.png" },
+        { name: "Charcoal", code: "12007", swatch: "images/arsh-soap-dispenser/swatch/12007_charcoal.png", img: "images/arsh-soap-dispenser/main/12007_charcoal.png" }
       ]
     },
     {
-      name: "Prism Bath Collection",
+      name: "Prism Soap Dispenser",
       sku: "PRISM-2024",
       desc: "Description",
       material: "Glass",
       size: "18 x 10 cm",
-      thumb: "images/prism-bath-collection/main/1001_gold.png",
+      thumb: "images/prism-soap-dispenser/main/1001_gold.png",
       colorOptions: [
-        { name: "Gold",   code: "1001", swatch: "images/prism-bath-collection/swatch/1001_gold.png",   img: "images/prism-bath-collection/main/1001_gold.png" },
-        { name: "Copper", code: "1002", swatch: "images/prism-bath-collection/swatch/1002_copper.png", img: "images/prism-bath-collection/main/1002_copper.png" },
-        { name: "Teak",   code: "1003", swatch: "images/prism-bath-collection/swatch/1003_teak.png",   img: "images/prism-bath-collection/main/1003_teak.png" },
-        { name: "Silver", code: "1004", swatch: "images/prism-bath-collection/swatch/1004_silver.png", img: "images/prism-bath-collection/main/1004_silver.png" },
-        { name: "Gold",   code: "1005", swatch: "images/prism-bath-collection/swatch/1005_gold.png",   img: "images/prism-bath-collection/main/1005_gold.png" },
-        { name: "Twin",   code: "1006", swatch: "images/prism-bath-collection/swatch/1006_twin.png",   img: "images/prism-bath-collection/main/1006_twin.png" },
-        { name: "Clear",  code: "1008", swatch: "images/prism-bath-collection/swatch/1008_clear.png",  img: "images/prism-bath-collection/main/1008_clear.png" }
+        { name: "Gold",   code: "1001", swatch: "images/prism-soap-dispenser/swatch/1001_gold.png",   img: "images/prism-soap-dispenser/main/1001_gold.png" },
+        { name: "Copper", code: "1002", swatch: "images/prism-soap-dispenser/swatch/1002_copper.png", img: "images/prism-soap-dispenser/main/1002_copper.png" },
+        { name: "Teak",   code: "1003", swatch: "images/prism-soap-dispenser/swatch/1003_teak.png",   img: "images/prism-soap-dispenser/main/1003_teak.png" },
+        { name: "Silver", code: "1004", swatch: "images/prism-soap-dispenser/swatch/1004_silver.png", img: "images/prism-soap-dispenser/main/1004_silver.png" },
+        { name: "Gold",   code: "1005", swatch: "images/prism-soap-dispenser/swatch/1005_gold.png",   img: "images/prism-soap-dispenser/main/1005_gold.png" },
+        { name: "Twin",   code: "1006", swatch: "images/prism-soap-dispenser/swatch/1006_twin.png",   img: "images/prism-soap-dispenser/main/1006_twin.png" },
+        { name: "Clear",  code: "1008", swatch: "images/prism-soap-dispenser/swatch/1008_clear.png",  img: "images/prism-soap-dispenser/main/1008_clear.png" }
       ]
     },
     {
-      name: "Earth Bath Collection",
+      name: "Earth Soap Dispenser",
       sku: "EARTH-2024",
       desc: "Description",
       material: "Ceramic",
       size: "18 x 10 cm",
-      thumb: "images/earth-bath-collection/main/7526_green.png",
+      thumb: "images/earth-soap-dispenser/main/7526_green.png",
       colorOptions: [
-        { name: "Green",  code: "7526", swatch: "images/earth-bath-collection/swatch/7526_green.png",  img: "images/earth-bath-collection/main/7526_green.png" },
-        { name: "Aqua",   code: "7525", swatch: "images/earth-bath-collection/swatch/7525_aqua.png",   img: "images/earth-bath-collection/main/7525_aqua.png" },
-        { name: "White",  code: "7524", swatch: "images/earth-bath-collection/swatch/7524_white.png",  img: "images/earth-bath-collection/main/7524_white.png" },
-        { name: "Grey",   code: "7520", swatch: "images/earth-bath-collection/swatch/7520_grey.png",   img: "images/earth-bath-collection/main/7520_grey.png" },
-        { name: "Beige",  code: "7519", swatch: "images/earth-bath-collection/swatch/7519_beige.png",  img: "images/earth-bath-collection/main/7519_beige.png" },
-        { name: "Black",  code: "7522", swatch: "images/earth-bath-collection/swatch/7522_black.png",  img: "images/earth-bath-collection/main/7522_black.png" },
-        { name: "Grey",   code: "7517", swatch: "images/earth-bath-collection/swatch/7517_grey.png",   img: "images/earth-bath-collection/main/7517_grey.png" },
-        { name: "Beige",  code: "7516", swatch: "images/earth-bath-collection/swatch/7516_beige.png",  img: "images/earth-bath-collection/main/7516_beige.png" },
-        { name: "Blue",   code: "7514", swatch: "images/earth-bath-collection/swatch/7514_blue.png",   img: "images/earth-bath-collection/main/7514_blue.png" },
-        { name: "Beige",  code: "7513", swatch: "images/earth-bath-collection/swatch/7513_beige.png",  img: "images/earth-bath-collection/main/7513_beige.png" },
-        { name: "Blue",   code: "7510", swatch: "images/earth-bath-collection/swatch/7510_blue.png",   img: "images/earth-bath-collection/main/7510_blue.png" },
-        { name: "Fawn",   code: "7512", swatch: "images/earth-bath-collection/swatch/7512_fawn.png",   img: "images/earth-bath-collection/main/7512_fawn.png" },
-        { name: "Beige",  code: "7511", swatch: "images/earth-bath-collection/swatch/7511_beige.png",  img: "images/earth-bath-collection/main/7511_beige.png" }
+        { name: "Green",  code: "7526", swatch: "images/earth-soap-dispenser/swatch/7526_green.png",  img: "images/earth-soap-dispenser/main/7526_green.png" },
+        { name: "Aqua",   code: "7525", swatch: "images/earth-soap-dispenser/swatch/7525_aqua.png",   img: "images/earth-soap-dispenser/main/7525_aqua.png" },
+        { name: "White",  code: "7524", swatch: "images/earth-soap-dispenser/swatch/7524_white.png",  img: "images/earth-soap-dispenser/main/7524_white.png" },
+        { name: "Grey",   code: "7520", swatch: "images/earth-soap-dispenser/swatch/7520_grey.png",   img: "images/earth-soap-dispenser/main/7520_grey.png" },
+        { name: "Beige",  code: "7519", swatch: "images/earth-soap-dispenser/swatch/7519_beige.png",  img: "images/earth-soap-dispenser/main/7519_beige.png" },
+        { name: "Black",  code: "7522", swatch: "images/earth-soap-dispenser/swatch/7522_black.png",  img: "images/earth-soap-dispenser/main/7522_black.png" },
+        { name: "Grey",   code: "7517", swatch: "images/earth-soap-dispenser/swatch/7517_grey.png",   img: "images/earth-soap-dispenser/main/7517_grey.png" },
+        { name: "Beige",  code: "7516", swatch: "images/earth-soap-dispenser/swatch/7516_beige.png",  img: "images/earth-soap-dispenser/main/7516_beige.png" },
+        { name: "Blue",   code: "7514", swatch: "images/earth-soap-dispenser/swatch/7514_blue.png",   img: "images/earth-soap-dispenser/main/7514_blue.png" },
+        { name: "Beige",  code: "7513", swatch: "images/earth-soap-dispenser/swatch/7513_beige.png",  img: "images/earth-soap-dispenser/main/7513_beige.png" },
+        { name: "Blue",   code: "7510", swatch: "images/earth-soap-dispenser/swatch/7510_blue.png",   img: "images/earth-soap-dispenser/main/7510_blue.png" },
+        { name: "Fawn",   code: "7512", swatch: "images/earth-soap-dispenser/swatch/7512_fawn.png",   img: "images/earth-soap-dispenser/main/7512_fawn.png" },
+        { name: "Beige",  code: "7511", swatch: "images/earth-soap-dispenser/swatch/7511_beige.png",  img: "images/earth-soap-dispenser/main/7511_beige.png" }
+      ]
+    },
+    {
+      name: "Alvina Soap Dispenser",
+      sku: "ALVINA-2024",
+      desc: "Description",
+      material: "Material",
+      size: "Size",
+      thumb: "images/alvina-soap-dispenser/main/4067_marble.png",
+      colorOptions: [
+        { name: "Marble",          code: "4067", swatch: "images/alvina-soap-dispenser/swatch/4067_marble.png",          img: "images/alvina-soap-dispenser/main/4067_marble.png" },
+        { name: "Charcoal",        code: "4068", swatch: "images/alvina-soap-dispenser/swatch/4068_charcoal.png",        img: "images/alvina-soap-dispenser/main/4068_charcoal.png" },
+        { name: "Silver",          code: "4006", swatch: "images/alvina-soap-dispenser/swatch/4006_silver.png",          img: "images/alvina-soap-dispenser/main/4006_silver.png" },
+        { name: "Grey",            code: "4061", swatch: "images/alvina-soap-dispenser/swatch/4061_grey.png",            img: "images/alvina-soap-dispenser/main/4061_grey.png" },
+        { name: "Black",           code: "4009", swatch: "images/alvina-soap-dispenser/swatch/4009_black.png",           img: "images/alvina-soap-dispenser/main/4009_black.png" },
+        { name: "Grey",            code: "4015", swatch: "images/alvina-soap-dispenser/swatch/4015_grey.png",            img: "images/alvina-soap-dispenser/main/4015_grey.png" },
+        { name: "Beige Brown",     code: "4060", swatch: "images/alvina-soap-dispenser/swatch/4060_beige_brown.png",     img: "images/alvina-soap-dispenser/main/4060_beige_brown.png" },
+        { name: "Marble",          code: "4019", swatch: "images/alvina-soap-dispenser/swatch/4019_marble.png",          img: "images/alvina-soap-dispenser/main/4019_marble.png" },
+        { name: "Gold",            code: "4007", swatch: "images/alvina-soap-dispenser/swatch/4007_gold.png",            img: "images/alvina-soap-dispenser/main/4007_gold.png" },
+        { name: "Taupe",           code: "4064", swatch: "images/alvina-soap-dispenser/swatch/4064_taupe.png",           img: "images/alvina-soap-dispenser/main/4064_taupe.png" },
+        { name: "Beige Brown",     code: "",     swatch: "images/alvina-soap-dispenser/swatch/beige_brown.png",         img: "images/alvina-soap-dispenser/main/beige_brown.png" },
+        { name: "Charcoal",        code: "4004", swatch: "images/alvina-soap-dispenser/swatch/4004_charcoal.png",        img: "images/alvina-soap-dispenser/main/4004_charcoal.png" },
+        { name: "Charcoal",        code: "4064", swatch: "images/alvina-soap-dispenser/swatch/4064_charcoal.png",        img: "images/alvina-soap-dispenser/main/4064_charcoal.png" },
+        { name: "Beige",           code: "",     swatch: "images/alvina-soap-dispenser/swatch/beige.png",               img: "images/alvina-soap-dispenser/main/beige.png" },
+        { name: "Wood",            code: "4005", swatch: "images/alvina-soap-dispenser/swatch/4005_wood.png",            img: "images/alvina-soap-dispenser/main/4005_wood.png" },
+        { name: "Dark Grey",       code: "4057", swatch: "images/alvina-soap-dispenser/swatch/4057_dark_grey.png",       img: "images/alvina-soap-dispenser/main/4057_dark_grey.png" },
+        { name: "Black & White",   code: "4020", swatch: "images/alvina-soap-dispenser/swatch/4020_black_white.png",     img: "images/alvina-soap-dispenser/main/4020_black_white.png" },
+        { name: "Black",           code: "4002", swatch: "images/alvina-soap-dispenser/swatch/4002_black.png",           img: "images/alvina-soap-dispenser/main/4002_black.png" },
+        { name: "Brown",           code: "4061", swatch: "images/alvina-soap-dispenser/swatch/4061_brown.png",           img: "images/alvina-soap-dispenser/main/4061_brown.png" },
+        { name: "Blue",            code: "4021", swatch: "images/alvina-soap-dispenser/swatch/4021_blue.png",            img: "images/alvina-soap-dispenser/main/4021_blue.png" },
+        { name: "Brown",           code: "4057", swatch: "images/alvina-soap-dispenser/swatch/4057_brown.png",           img: "images/alvina-soap-dispenser/main/4057_brown.png" },
+        { name: "Charcoal",        code: "4012", swatch: "images/alvina-soap-dispenser/swatch/4012_charcoal.png",        img: "images/alvina-soap-dispenser/main/4012_charcoal.png" },
+        { name: "Dark Grey White", code: "4058", swatch: "images/alvina-soap-dispenser/swatch/4058_dark_grey_white.png", img: "images/alvina-soap-dispenser/main/4058_dark_grey_white.png" },
+        { name: "White Blue",      code: "4016", swatch: "images/alvina-soap-dispenser/swatch/4016_white_blue.png",      img: "images/alvina-soap-dispenser/main/4016_white_blue.png" },
+        { name: "Purple",          code: "4055", swatch: "images/alvina-soap-dispenser/swatch/4055_purple.png",          img: "images/alvina-soap-dispenser/main/4055_purple.png" },
+        { name: "Grey Black",      code: "4016", swatch: "images/alvina-soap-dispenser/swatch/4016_grey_black.png",      img: "images/alvina-soap-dispenser/main/4016_grey_black.png" },
+        { name: "Sandstone",       code: "4055", swatch: "images/alvina-soap-dispenser/swatch/4055_sandstone.png",       img: "images/alvina-soap-dispenser/main/4055_sandstone.png" },
+        { name: "Brown",           code: "4010", swatch: "images/alvina-soap-dispenser/swatch/4010_brown.png",           img: "images/alvina-soap-dispenser/main/4010_brown.png" },
+        { name: "Grey",            code: "4055", swatch: "images/alvina-soap-dispenser/swatch/4055_grey.png",            img: "images/alvina-soap-dispenser/main/4055_grey.png" },
+        { name: "Brown",           code: "4016", swatch: "images/alvina-soap-dispenser/swatch/4016_brown.png",           img: "images/alvina-soap-dispenser/main/4016_brown.png" },
+        { name: "Teal Green",      code: "4068", swatch: "images/alvina-soap-dispenser/swatch/4068_teal_green.png",      img: "images/alvina-soap-dispenser/main/4068_teal_green.png" },
+        { name: "Cheery",          code: "4013", swatch: "images/alvina-soap-dispenser/swatch/4013_cheery.png",          img: "images/alvina-soap-dispenser/main/4013_cheery.png" },
+        { name: "Beige",           code: "4068", swatch: "images/alvina-soap-dispenser/swatch/4068_beige.png",           img: "images/alvina-soap-dispenser/main/4068_beige.png" },
+        { name: "Concrete",        code: "4008", swatch: "images/alvina-soap-dispenser/swatch/4008_concrete.png",        img: "images/alvina-soap-dispenser/main/4008_concrete.png" }
+      ]
+    },
+    {
+      name: "Vibe Soap Dispenser",
+      sku: "VIBE-2024",
+      desc: "Description",
+      material: "Material",
+      size: "Size",
+      thumb: "images/vibe-soap-dispenser/main/14003_beige.png",
+      colorOptions: [
+        { name: "Beige",          code: "14003", swatch: "images/vibe-soap-dispenser/swatch/14003_beige.png",          img: "images/vibe-soap-dispenser/main/14003_beige.png" },
+        { name: "Gold",           code: "14002", swatch: "images/vibe-soap-dispenser/swatch/14002_gold.png",           img: "images/vibe-soap-dispenser/main/14002_gold.png" },
+        { name: "Sandstone",      code: "14001", swatch: "images/vibe-soap-dispenser/swatch/14001_sandstone.png",      img: "images/vibe-soap-dispenser/main/14001_sandstone.png" },
+        { name: "Sandstone",      code: "4071",  swatch: "images/vibe-soap-dispenser/swatch/4071_sandstone.png",       img: "images/vibe-soap-dispenser/main/4071_sandstone.png" },
+        { name: "Brown Orange",   code: "4070",  swatch: "images/vibe-soap-dispenser/swatch/4070_brown_orange.png",    img: "images/vibe-soap-dispenser/main/4070_brown_orange.png" },
+        { name: "Grey",           code: "4069",  swatch: "images/vibe-soap-dispenser/swatch/4069_grey.png",            img: "images/vibe-soap-dispenser/main/4069_grey.png" },
+        { name: "Brown",          code: "4069",  swatch: "images/vibe-soap-dispenser/swatch/4069_brown.png",           img: "images/vibe-soap-dispenser/main/4069_brown.png" },
+        { name: "Wood",           code: "4065",  swatch: "images/vibe-soap-dispenser/swatch/4065_wood.png",            img: "images/vibe-soap-dispenser/main/4065_wood.png" },
+        { name: "Black",          code: "4059",  swatch: "images/vibe-soap-dispenser/swatch/4059_black.png",           img: "images/vibe-soap-dispenser/main/4059_black.png" },
+        { name: "Taupe",          code: "4063",  swatch: "images/vibe-soap-dispenser/swatch/4063_taupe.png",           img: "images/vibe-soap-dispenser/main/4063_taupe.png" },
+        { name: "Breige Brown",   code: "4062",  swatch: "images/vibe-soap-dispenser/swatch/4062_breige_brown.png",    img: "images/vibe-soap-dispenser/main/4062_breige_brown.png" },
+        { name: "Charcoal",       code: "4052",  swatch: "images/vibe-soap-dispenser/swatch/4052_charcoal.png",        img: "images/vibe-soap-dispenser/main/4052_charcoal.png" },
+        { name: "White Taupe",    code: "4054",  swatch: "images/vibe-soap-dispenser/swatch/4054_white_taupe.png",     img: "images/vibe-soap-dispenser/main/4054_white_taupe.png" },
+        { name: "White Gray",     code: "4054",  swatch: "images/vibe-soap-dispenser/swatch/4054_white_gray.png",      img: "images/vibe-soap-dispenser/main/4054_white_gray.png" },
+        { name: "White Black",    code: "4056",  swatch: "images/vibe-soap-dispenser/swatch/4056_white_black.png",     img: "images/vibe-soap-dispenser/main/4056_white_black.png" },
+        { name: "Charcoal",       code: "5051",  swatch: "images/vibe-soap-dispenser/swatch/5051_charcoal.png",        img: "images/vibe-soap-dispenser/main/5051_charcoal.png" },
+        { name: "Black White",    code: "4051",  swatch: "images/vibe-soap-dispenser/swatch/4051_black_white.png",     img: "images/vibe-soap-dispenser/main/4051_black_white.png" }
       ]
     },
     {
